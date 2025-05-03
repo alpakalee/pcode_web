@@ -1,0 +1,13 @@
+{
+  "name": "Simple XSS Challenge",
+  "category": "web",
+  "description": "이 웹사이트에는 XSS 취약점이 있습니다. 관리자 쿠키를 탈취해보세요!",
+  "difficulty": "쉬움",
+  "flag": "FLAG{xss_is_still_relevant_in_2023}",
+  "points": 100,
+  "tags": ["xss", "web", "javascript"],
+  "hints": [
+    {"content": "입력 폼의 유효성 검사를 확인해보세요.", "cost": 10},
+    {"content": "JavaScript 코드가 어떻게 처리되는지 살펴보세요.", "cost": 20}
+  ]
+} 

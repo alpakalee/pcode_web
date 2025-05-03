@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-CODE | 보안 동아리 웹사이트</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3a6ea5;
+            --primary-dark: #004e92;
+            --secondary: #ff304f;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --info: #17a2b8;
+            --gradient-bg: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f6f8fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxkZWZzPgogICAgPHBhdHRlcm4gaWQ9InBhdHRlcm4iIHg9IjAiIHk9IjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+CiAgICAgIDxyZWN0IHg9IjE4IiB5PSIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjA3Ii8+CiAgICA8L3BhdHRlcm4+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiLz4KPC9zdmc+') repeat;
+            opacity: 0.4;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            flex: 1;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-left: 1rem;
+        }
+        
+        .welcome-text {
+            color: white;
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+        
+        .button-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(90deg, #ffffff, #e2e2e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            flex: 1;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .section:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .card h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        .card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+        
+        .card-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.5rem;
+            color: var(--primary);
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.2) rotate(15deg);
+            opacity: 0.2;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(58, 110, 165, 0.05), rgba(0, 78, 146, 0.1));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 16px;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(58, 110, 165, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.8rem 1.8rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(58, 110, 165, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+            z-index: -1;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(58, 110, 165, 0.3);
+        }
+        
+        .button:hover::before {
+            left: 100%;
+        }
+        
+        .button i {
+            margin-right: 0.6rem;
+        }
+        
+        .button-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+        
+        .button-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .news-item {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .news-item:hover {
+            transform: translateX(8px);
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-date {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(58, 110, 165, 0.2);
+        }
+        
+        .news-date span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        
+        .news-content {
+            flex: 1;
+        }
+        
+        .news-content h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .news-content p {
+            color: var(--gray);
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            background-image: var(--gradient-bg);
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxkZWZzPgogICAgPHBhdHRlcm4gaWQ9InBhdHRlcm4iIHg9IjAiIHk9IjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+CiAgICAgIDxyZWN0IHg9IjE4IiB5PSIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+CiAgICA8L3BhdHRlcm4+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiLz4KPC9zdmc+') repeat;
+            opacity: 0.1;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (max-width: 992px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                margin-top: 1rem;
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <h1>P-CODE</h1>
+                <p class="subtitle">보안 동아리 CTF 문제 공유 및 지식 공유 플랫폼</p>
+                <a href="/ctf" class="button"><i class="fas fa-flag"></i> CTF 플랫폼</a>
+                <a href="/board" class="button"><i class="fas fa-chalkboard"></i> 지식 공유 게시판</a>
+            </div>
+            <div class="header-right auth-buttons">
+                <a href="/login.html" class="button button-sm button-outline"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+                <a href="/register.html" class="button button-sm"><i class="fas fa-user-plus"></i> 회원가입</a>
+            </div>
+            <div class="header-right user-info" style="display: none;">
+                <span class="welcome-text">환영합니다, <span id="username"></span>님!</span>
+                <button id="logoutBtn" class="button button-sm button-outline"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="section">
+            <div class="card">
+                <i class="fas fa-shield-alt card-icon"></i>
+                <h2>서비스 소개</h2>
+                <p>P-CODE 웹사이트는 사이버 보안에 관심 있는 모든 분들을 위한 온라인 커뮤니티 플랫폼입니다. CTF 대회 참여, 보안 지식 공유, 기술 토론을 한 곳에서 경험하세요.</p>
+                
+                <div class="services">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h3>CTF 플랫폼</h3>
+                        <p>다양한 CTF 문제를 풀며 실력을 향상시킬 수 있는 온라인 플랫폼입니다.</p>
+                        <a href="/ctf" class="button"><i class="fas fa-external-link-alt"></i> 바로가기</a>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <h3>지식 공유 게시판</h3>
+                        <p>보안 관련 지식과 경험을 공유하고 토론할 수 있는 커뮤니티 공간입니다.</p>
+                        <a href="/board" class="button"><i class="fas fa-external-link-alt"></i> 바로가기</a>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>동아리 활동</h3>
+                        <p>정기적인 스터디, 워크샵, 컨퍼런스 참여 등 다양한 동아리 활동 정보를 확인하세요.</p>
+                        <a href="/activity" class="button button-outline"><i class="fas fa-calendar-alt"></i> 일정 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="card">
+                <i class="fas fa-newspaper card-icon"></i>
+                <h2>최근 업데이트</h2>
+                
+                <div class="news-item">
+                    <div class="news-date">
+                        <div>현재</div>
+                        <span>NEW</span>
+                    </div>
+                    <div class="news-content">
+                        <h3>DDNS 호스팅 설정 완료</h3>
+                        <p>DDNS를 이용한 호스팅 설정이 완료되었습니다. 이제 pcode.ddns.net 주소로 접속할 수 있습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <div class="news-date">
+                        <div>SSL</div>
+                        <span>보안</span>
+                    </div>
+                    <div class="news-content">
+                        <h3>SSL 인증서 적용</h3>
+                        <p>Let's Encrypt를 이용한 SSL 인증서가 적용되어 HTTPS 프로토콜로 안전하게 접속할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="card">
+                <i class="fas fa-hands-helping card-icon"></i>
+                <h2>참여하기</h2>
+                <p>P-CODE 커뮤니티에 참여하여 함께 성장하세요. 다양한 보안 지식과 경험을 공유하고, CTF 대회에 참가하며 실력을 향상시킬 수 있습니다.</p>
+                <a href="/register.html" class="button"><i class="fas fa-user-plus"></i> 회원가입</a>
+                <a href="/login.html" class="button button-outline"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 P-CODE. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 인증 상태 확인
+            checkAuthStatus();
+            
+            // 로그아웃 버튼 이벤트 리스너
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function() {
+                    try {
+                        const response = await fetch('/api/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                        
+                        if (response.ok) {
+                            // 로컬 스토리지 정보 삭제
+                            localStorage.removeItem('isLoggedIn');
+                            localStorage.removeItem('username');
+                            
+                            // 페이지 새로고침
+                            window.location.reload();
+                        }
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    }
+                });
+            }
+            
+            // 인증 상태 확인 함수
+            async function checkAuthStatus() {
+                const authButtons = document.querySelector('.auth-buttons');
+                const userInfo = document.querySelector('.user-info');
+                const usernameSpan = document.getElementById('username');
+                
+                try {
+                    const response = await fetch('/api/user', {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // 로그인 상태 UI 표시
+                        authButtons.style.display = 'none';
+                        userInfo.style.display = 'flex';
+                        
+                        // 사용자 이름 표시
+                        if (usernameSpan) {
+                            usernameSpan.textContent = data.user.username;
+                        }
+                        
+                        // 참여하기 섹션 숨기기
+                        const joinSection = document.querySelector('.section:last-child');
+                        if (joinSection) {
+                            joinSection.style.display = 'none';
+                        }
+                    } else {
+                        // 로그아웃 상태 UI 표시
+                        authButtons.style.display = 'flex';
+                        userInfo.style.display = 'none';
+                        
+                        // 로컬 스토리지 정보 확인
+                        const isLoggedIn = localStorage.getItem('isLoggedIn');
+                        if (isLoggedIn === 'true') {
+                            // 세션이 만료된 경우 로컬 스토리지 정보 삭제
+                            localStorage.removeItem('isLoggedIn');
+                            localStorage.removeItem('username');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Auth check error:', error);
+                    // 에러 발생 시 로그아웃 상태로 표시
+                    authButtons.style.display = 'flex';
+                    userInfo.style.display = 'none';
+                }
+            }
+            
+            // 섹션 애니메이션 효과
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html> 
